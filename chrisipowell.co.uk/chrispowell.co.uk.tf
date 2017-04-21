@@ -13,15 +13,10 @@ resource "aws_s3_bucket" "website_chrisipowell" {
   }
 }
 
-resource "aws_route53_zone" "chrisipowell_co_uk" {
-    name = "chrisipowell.co.uk."
-
-}
-
 resource "aws_cloudfront_distribution" "chrisipowell_static" {
    origin {
-     domain_name = "${aws_s3_bucket.website_chrisipowell.bucket_domain_name}"
-     origin_id = "S3-Website-chrisipowell.s3-website-eu-west-1.amazonaws.com"
+     domain_name = "${aws_s3_bucket.website_chrisipowell.website_endpoint}"
+     origin_id = "Custom-Website-chrisipowell"
 
      custom_origin_config {
        http_port = 80
@@ -48,7 +43,7 @@ resource "aws_cloudfront_distribution" "chrisipowell_static" {
    default_cache_behavior {
      allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
      cached_methods = ["GET", "HEAD"]
-     target_origin_id = "S3-Website-chrisipowell.s3-website-eu-west-1.amazonaws.com"
+     target_origin_id = "Custom-Website-chrisipowell"
 
      default_ttl = 86400
      max_ttl = 604800
